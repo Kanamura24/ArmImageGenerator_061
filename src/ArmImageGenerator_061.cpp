@@ -47,9 +47,9 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.j1min", "-1.57076",
     "conf.default.j0step", "0.157076",
     "conf.default.j1step", "0.157076",
-	"conf.default.wait_interval", "1.0",
+	"conf.default.wait_interval", "1.5",
     "conf.default.camera_wait_time", "3.0",
-    "conf.default.gripper_close_ratio", "0.3",
+    "conf.default.gripper_close_ratio", "0.6",
     // Widget
     "conf.__widget__.debug", "text",
     "conf.__widget__.j0max", "text",
@@ -121,9 +121,9 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("j1min", m_j1min, "-1.57076");
   bindParameter("j0step", m_j0step, "0.157076");
   bindParameter("j1step", m_j1step, "0.157076");
-  bindParameter("wait_interval", m_wait_interval, "0.2");
+  bindParameter("wait_interval", m_wait_interval, "1.5");
   bindParameter("camera_wait_time", m_camera_wait_time, "3.0");
-  bindParameter("gripper_close_ratio", m_gripper_close_ratio, "0.3");
+  bindParameter("gripper_close_ratio", m_gripper_close_ratio, "0.6");
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -184,7 +184,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onActivated(RTC::UniqueId ec_id)
 
 
     m_manipCommon->servoON();
- 	m_manipMiddle->setSpeedJoint(20);
+ 	m_manipMiddle->setSpeedJoint(30);
 
  	m_jointPos->length(6);
  	m_jointPos[0] = 0;
@@ -281,8 +281,8 @@ double Uniform( void ){
 
 RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
 {
-   double xlimit[2] = {120, 240};
-   double ylimit[2] = {-90, 90};
+   double xlimit[2] = {360, 400};
+   double ylimit[2] = {-185, 185};
    double thlimit[2] = {-M_PI+1.0e-10, M_PI-1.0e-10};
   
 
@@ -294,7 +294,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    y /= 1000.0;
 
    double z = 40 / 1000.0;
-   double z_min = 10 / 1000.0;
+   double z_min = -72 / 1000.0;
 
    double s2 = sin(th);
    double c2 = cos(th);
@@ -327,14 +327,14 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    coil::sleep(m_sleepTime);
 
     std::cout << "[ArmImageGenerator] Escape" << std::endl;
-   // //  m_jointPos->length(6);
-   // m_jointPos[0] = M_PI/2;
-   // m_jointPos[1] = 0;
-   // m_jointPos[2] = M_PI/2;
-   // m_jointPos[3] = 0;
-   // m_jointPos[4] = M_PI/2;
-   // m_jointPos[5] = 0;
-   // m_manipMiddle->movePTPJointAbs(m_jointPos);  
+   //  m_jointPos->length(6);
+   m_jointPos[0] = 0;
+   m_jointPos[1] = M_PI/4;
+   m_jointPos[2] = M_PI/4;
+   m_jointPos[3] = 0;
+   m_jointPos[4] = M_PI/2;
+   m_jointPos[5] = 0;
+   m_manipMiddle->movePTPJointAbs(m_jointPos);  
    coil::sleep(m_sleepTime);
 
    JARA_ARM::CarPosWithElbow_var actual(new JARA_ARM::CarPosWithElbow());
@@ -471,6 +471,9 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
   m_manipMiddle->movePTPJointAbs(m_jointPos);  
   coil::sleep(m_sleepTime);
   std::cout << "------------------------------------------------------------" << std::endl;
+
+  m_JointLog.flush();
+  
   return RTC::RTC_OK;
 }
 
