@@ -295,6 +295,13 @@ class ArmImageGenerator_061
    */
   float m_gripper_close_ratio;
 
+
+  float m_z_min;
+  float m_z_prepare_offset;
+  float m_y_prepare_offset;
+  float m_x_prepare_offset;
+
+
   // </rtc-template>
 
   // DataInPort declaration
