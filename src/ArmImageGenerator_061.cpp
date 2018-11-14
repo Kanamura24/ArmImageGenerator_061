@@ -47,9 +47,13 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.j1min", "-1.57076",
     "conf.default.j0step", "0.157076",
     "conf.default.j1step", "0.157076",
-	"conf.default.wait_interval", "1.5",
+    "conf.default.wait_interval", "1.5",
     "conf.default.camera_wait_time", "3.0",
     "conf.default.gripper_close_ratio", "0.6",
+    "conf.default.z_min", "-0.072",
+    "conf.default.z_prepare_offset", "0.030",
+    "conf.default.y_prepare_offset", "0.00",
+    "conf.default.x_prepare_offset", "0.00",
     // Widget
     "conf.__widget__.debug", "text",
     "conf.__widget__.j0max", "text",
@@ -124,6 +128,11 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("wait_interval", m_wait_interval, "1.5");
   bindParameter("camera_wait_time", m_camera_wait_time, "3.0");
   bindParameter("gripper_close_ratio", m_gripper_close_ratio, "0.6");
+
+  bindParameter("z_min", m_z_min, "-0.072");
+  bindParameter("x_prepare_offset", m_x_prepare_offset, "0.00");
+  bindParameter("y_prepare_offset", m_y_prepare_offset, "0.00");
+  bindParameter("z_prepare_offset", m_z_prepare_offset, "0.030");
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -281,7 +290,7 @@ double Uniform( void ){
 
 RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
 {
-   double xlimit[2] = {360, 400};
+   double xlimit[2] = {0.360, 0.400};
    double ylimit[2] = {-185, 185};
    double thlimit[2] = {-M_PI+1.0e-10, M_PI-1.0e-10};
   
@@ -290,23 +299,22 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    double y = Uniform() * (ylimit[1] - ylimit[0]) + ylimit[0];
    double th = Uniform() * (thlimit[1] - thlimit[0]) + thlimit[0];
 
-   x /= 1000.0;
-   y /= 1000.0;
-
-   double z = 40 / 1000.0;
-   double z_min = -72 / 1000.0;
+   double z = m_z_prepare + m_z_min; // 40 / 1000.0;
+   double z_min = m_z_min; //-72 / 1000.0;
 
    double s2 = sin(th);
    double c2 = cos(th);
 
+   double x_offset = -m_x_prepare_offset * c2 + m_y_prepare_offset * s2;
+   double y_offset =  m_x_prepare_offset * s2 + m_y_prepare_offset * c2;
 
    std::cout << "--------------------------------------------------" << std::endl;
 
    JARA_ARM::CarPosWithElbow carPos;
 
    std::cout << "Reach (" << x << ", " << y << ", " << z << ")" << std::endl;
-   carPos.carPos[0][0] = -c2;  carPos.carPos[0][1] = s2; carPos.carPos[0][2] =  0.0; carPos.carPos[0][3] = x;
-   carPos.carPos[1][0] =  s2;  carPos.carPos[1][1] = c2; carPos.carPos[1][2] =  0.0; carPos.carPos[1][3] = y;
+   carPos.carPos[0][0] = -c2;  carPos.carPos[0][1] = s2; carPos.carPos[0][2] =  0.0; carPos.carPos[0][3] = x + x_offset;
+   carPos.carPos[1][0] =  s2;  carPos.carPos[1][1] = c2; carPos.carPos[1][2] =  0.0; carPos.carPos[1][3] = y + y_offset;
    carPos.carPos[2][0] =  0.0; carPos.carPos[2][1] = 0; carPos.carPos[2][2] = -1.0; carPos.carPos[2][3] = z;
    carPos.elbow = 1.0;
    carPos.structFlag = 1;
