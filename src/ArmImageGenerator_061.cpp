@@ -192,8 +192,18 @@ RTC::ReturnCode_t ArmImageGenerator_061::onActivated(RTC::UniqueId ec_id)
  	}
 
 
-    m_manipCommon->servoON();
- 	m_manipMiddle->setSpeedJoint(30);
+	JARA_ARM::RETURN_ID_var ret = m_manipCommon->servoON();
+	if (ret->id != JARA_ARM::OK) {
+	  std::cout << "ERROR in ServoON" << std::endl;
+	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	}
+ 	ret = m_manipMiddle->setSpeedJoint(30);
+	if (ret->id != JARA_ARM::OK) {
+	  std::cout << "ERROR in ServoON" << std::endl;
+	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	}
 
  	m_jointPos->length(6);
  	m_jointPos[0] = 0;
@@ -268,7 +278,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onDeactivated(RTC::UniqueId ec_id)
  	m_jointPos[2] = M_PI/2;
  	m_jointPos[4] = M_PI/2;
 	
- 	m_manipMiddle->movePTPJointAbs(m_jointPos);
+	JARA_ARM::RETURN_ID_var ret = m_manipMiddle->movePTPJointAbs(m_jointPos);
+	if (ret->id != JARA_ARM::OK) {
+	  std::cout << "ERROR in ServoON" << std::endl;
+	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	}
+
   
  	m_JointLog.close();
 
@@ -318,23 +334,47 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    carPos.carPos[2][0] =  0.0; carPos.carPos[2][1] = 0; carPos.carPos[2][2] = -1.0; carPos.carPos[2][3] = z;
    carPos.elbow = 1.0;
    carPos.structFlag = 1;
-   JARA_ARM::RETURN_ID_var ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+   JARA_ARM::RETURN_ID_var ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+   
    coil::sleep(m_sleepTime);
    std::cout << "[ArmImageGenerator] Down" << std::endl;
    carPos.carPos[2][3] = z_min;
-   ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+   ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+   
    coil::sleep(m_sleepTime);
 
    std::cout << "[ArmImageGenerator] Release" << std::endl;
-   m_manipMiddle->moveGripper(50);
+   ret = m_manipMiddle->moveGripper(50);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+   
    coil::sleep(m_sleepTime);
 
    std::cout << "[ArmImageGenerator] Up" << std::endl;
    carPos.carPos[2][3] = z;
-   ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+   ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
    coil::sleep(m_sleepTime);
 
-    std::cout << "[ArmImageGenerator] Escape" << std::endl;
+   std::cout << "[ArmImageGenerator] Escape" << std::endl;
    //  m_jointPos->length(6);
    m_jointPos[0] = 0;
    m_jointPos[1] = M_PI/4;
@@ -342,12 +382,24 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    m_jointPos[3] = 0;
    m_jointPos[4] = M_PI/2;
    m_jointPos[5] = 0;
-   m_manipMiddle->movePTPJointAbs(m_jointPos);  
+   ret = m_manipMiddle->movePTPJointAbs(m_jointPos);  
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
    coil::sleep(m_sleepTime);
 
    JARA_ARM::CarPosWithElbow_var actual(new JARA_ARM::CarPosWithElbow());
    //JARA_ARM::RETURN_ID_var ret2 = m_manipCommon->getFeedbackPosJoint(actual);
-   JARA_ARM::RETURN_ID_var ret2 = m_manipMiddle->getFeedbackPosCartesian(actual);
+   ret = m_manipMiddle->getFeedbackPosCartesian(actual);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
 
    std::cout << "[ArmImageGenerator] Waiting for CameraImage...." << std::ends;
 
@@ -449,24 +501,48 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
 
   std::cout << "[ArmImageGenerator] Reach" << std::endl;
   carPos.carPos[2][3] = z;
-  ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+  ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
   coil::sleep(m_sleepTime);
 
   std::cout << "[ArmImageGenerator] Down" << std::endl;
   carPos.carPos[2][3] = z_min;
-  ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+  ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
   coil::sleep(m_sleepTime);
 
   std::cout << "[ArmImageGenerator] Hold" << std::endl;
 
   double ratio = m_gripper_close_ratio > 1.0 ? 1.0 : m_gripper_close_ratio < 0.0 ? 0 : m_gripper_close_ratio;
-  ret1 = m_manipMiddle->moveGripper(100 * ratio);//m_gripper_close_ratio);
+  ret = m_manipMiddle->moveGripper(100 * ratio);//m_gripper_close_ratio);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
   //ret1 = m_manipMiddle->moveGripper(10);
   coil::sleep(m_sleepTime);
 
   std::cout << "[ArmImageGenerator] Up" << std::endl;
   carPos.carPos[2][3] = z;
-  ret1 = m_manipMiddle->movePTPCartesianAbs(carPos);
+  ret = m_manipMiddle->movePTPCartesianAbs(carPos);
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
   coil::sleep(m_sleepTime);
 
   std::cout << "[ArmImageGenerator] Ready" << std::endl;
@@ -476,7 +552,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
   m_jointPos[3] = 0;
   m_jointPos[4] = M_PI/2;
   m_jointPos[5] = 0;
-  m_manipMiddle->movePTPJointAbs(m_jointPos);  
+  ret = m_manipMiddle->movePTPJointAbs(m_jointPos);  
+   if (ret->id != JARA_ARM::OK) {
+     std::cout << "ERROR in ServoON" << std::endl;
+     std::cout << " ERRORCODE    :" << ret->id << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+   }
+
   coil::sleep(m_sleepTime);
   std::cout << "------------------------------------------------------------" << std::endl;
 
