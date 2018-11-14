@@ -196,13 +196,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onActivated(RTC::UniqueId ec_id)
 	if (ret->id != JARA_ARM::OK) {
 	  std::cout << "ERROR in ServoON" << std::endl;
 	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
-	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
 	}
  	ret = m_manipMiddle->setSpeedJoint(30);
 	if (ret->id != JARA_ARM::OK) {
 	  std::cout << "ERROR in ServoON" << std::endl;
 	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
-	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
 	}
 
  	m_jointPos->length(6);
@@ -282,7 +282,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onDeactivated(RTC::UniqueId ec_id)
 	if (ret->id != JARA_ARM::OK) {
 	  std::cout << "ERROR in ServoON" << std::endl;
 	  std::cout << " ERRORCODE    :" << ret->id << std::endl;
-	  std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+	  std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
 	}
 
   
@@ -315,7 +315,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    double y = Uniform() * (ylimit[1] - ylimit[0]) + ylimit[0];
    double th = Uniform() * (thlimit[1] - thlimit[0]) + thlimit[0];
 
-   double z = m_z_prepare + m_z_min; // 40 / 1000.0;
+   double z = m_z_prepare_offset + m_z_min; // 40 / 1000.0;
    double z_min = m_z_min; //-72 / 1000.0;
 
    double s2 = sin(th);
@@ -338,7 +338,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
    
    coil::sleep(m_sleepTime);
@@ -348,7 +348,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
    
    coil::sleep(m_sleepTime);
@@ -358,7 +358,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
    
    coil::sleep(m_sleepTime);
@@ -369,7 +369,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
    coil::sleep(m_sleepTime);
@@ -386,7 +386,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
    coil::sleep(m_sleepTime);
@@ -397,7 +397,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
 
@@ -505,7 +505,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
   coil::sleep(m_sleepTime);
@@ -516,7 +516,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
   coil::sleep(m_sleepTime);
@@ -528,7 +528,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
   //ret1 = m_manipMiddle->moveGripper(10);
@@ -540,7 +540,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
   coil::sleep(m_sleepTime);
@@ -556,7 +556,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
-     std::cout << " ERRORMESSAGE :" << ret->msg << std::endl;
+     std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
    }
 
   coil::sleep(m_sleepTime);
