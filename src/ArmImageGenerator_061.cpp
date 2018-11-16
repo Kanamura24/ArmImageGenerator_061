@@ -336,6 +336,9 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    carPos.structFlag = 1;
    JARA_ARM::RETURN_ID_var ret = m_manipMiddle->movePTPCartesianAbs(carPos);
    if (ret->id != JARA_ARM::OK) {
+     
+     return RTC::RTC_OK;
+     
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
      std::cout << " ERRORMESSAGE :" << ret->comment << std::endl;
@@ -562,7 +565,7 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
   coil::sleep(m_sleepTime);
   std::cout << "------------------------------------------------------------" << std::endl;
 
-  m_JointLog.flush();
+  // m_JointLog.flush();
   
   return RTC::RTC_OK;
 }
