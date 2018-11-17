@@ -307,7 +307,7 @@ double Uniform( void ){
 RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
 {
    double xlimit[2] = {0.360, 0.400};
-   double ylimit[2] = {-185, 185};
+   double ylimit[2] = {-0.185, 0.185};
    double thlimit[2] = {-M_PI+1.0e-10, M_PI-1.0e-10};
   
 
