@@ -301,13 +301,12 @@ class ArmImageGenerator_061
   float m_y_prepare_offset;
   float m_x_prepare_offset;
 
-  /*!
-   * 
-   * - Name:  camera_position
-   * - DefaultValue: middle
-   */
-  std::string m_camera_position;
-
+  float m_camera_jointPos0;
+  float m_camera_jointPos1;
+  float m_camera_jointPos2;
+  float m_camera_jointPos3;
+  float m_camera_jointPos4;
+  float m_camera_jointPos5;
 
 
   // </rtc-template>

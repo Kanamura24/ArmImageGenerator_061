@@ -54,8 +54,14 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.z_prepare_offset", "0.030",
     "conf.default.y_prepare_offset", "0.00",
     "conf.default.x_prepare_offset", "0.00",
-    "conf.default.camera_position", "middle",
-
+    "conf.default.camera_jointPos0", "0",
+    "conf.default.camera_jointPos1", "M_PI/4",
+    "conf.default.camera_jointPos2", "M_PI/4",
+    "conf.default.camera_jointPos3", "0",
+    "conf.default.camera_jointPos4", "M_PI/2",
+    "conf.default.camera_jointPos5", "0",
+    
+    
     // Widget
     "conf.__widget__.debug", "text",
     "conf.__widget__.j0max", "text",
@@ -70,12 +76,17 @@ static const char* armimagegenerator_061_spec[] =
     "conf.__widget__.y_prepare_offset", "text",
     "conf.__widget__.x_prepare_offset", "text",
     
+    "conf.__widget__.camera_jointPos0", "text",
+    "conf.__widget__.camera_jointPos1", "text",
+    "conf.__widget__.camera_jointPos2", "text",
+    "conf.__widget__.camera_jointPos3", "text",
+    "conf.__widget__.camera_jointPos4", "text",
+    "conf.__widget__.camera_jointPos5", "text",
+    
     "conf.__widget__.gripper_close_ratio", "slider.0.1",
-    "conf.__widget__.camera_position", "radio",
     
     // Constraints
     "conf.__constraints__.gripper_close_ratio", "0.0<=x<=1.0",
-    "conf.__constraints__.camera_position", "(middle, high)",
 
     ""
   };
@@ -145,7 +156,14 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("y_prepare_offset", m_y_prepare_offset, "0.00");
   bindParameter("z_prepare_offset", m_z_prepare_offset, "0.030");
     
-  bindParameter("camera_position", m_camera_position, "middle");
+  bindParameter("camera_jointPos0", m_camera_jointPos0, "0");
+  bindParameter("camera_jointPos1", m_camera_jointPos1, "M_PI/4");
+  bindParameter("camera_jointPos2", m_camera_jointPos2, "M_PI/4");
+  bindParameter("camera_jointPos3", m_camera_jointPos3, "0");
+  bindParameter("camera_jointPos4", m_camera_jointPos4, "M_PI/2");
+  bindParameter("camera_jointPos5", m_camera_jointPos5, "0");
+
+  
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -391,25 +409,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    coil::sleep(m_sleepTime);
 
    std::cout << "[ArmImageGenerator] Escape" << std::endl;
-   if(m_camera_position == "middle") {
-      //  m_jointPos->length(6);
-      m_jointPos[0] = 0;
-      m_jointPos[1] = M_PI/4;
-      m_jointPos[2] = M_PI/4;
-      m_jointPos[3] = 0;
-      m_jointPos[4] = M_PI/2;
-      m_jointPos[5] = 0;
-   }
-    
-   else if(m_camera_position == "high") {
-      //  m_jointPos->length(6);
-      m_jointPos[0] = 0;
-      m_jointPos[1] = 0;
-      m_jointPos[2] = M_PI/2;
-      m_jointPos[3] = 0;
-      m_jointPos[4] = M_PI/2;
-      m_jointPos[5] = 0;
-   }
+   //  m_jointPos->length(6);
+   m_jointPos[0] = m_camera_jointPos0;
+   m_jointPos[1] = m_camera_jointPos1;
+   m_jointPos[2] = m_camera_jointPos2;
+   m_jointPos[3] = m_camera_jointPos3;
+   m_jointPos[4] = m_camera_jointPos4;
+   m_jointPos[5] = m_camera_jointPos5;
 
    ret = m_manipMiddle->movePTPJointAbs(m_jointPos);
    if (ret->id != JARA_ARM::OK) {
