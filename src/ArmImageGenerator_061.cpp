@@ -54,6 +54,8 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.z_prepare_offset", "0.030",
     "conf.default.y_prepare_offset", "0.00",
     "conf.default.x_prepare_offset", "0.00",
+    "conf.default.camera_position", "middle",
+
     // Widget
     "conf.__widget__.debug", "text",
     "conf.__widget__.j0max", "text",
@@ -63,9 +65,18 @@ static const char* armimagegenerator_061_spec[] =
     "conf.__widget__.j0step", "text",
     "conf.__widget__.j1step", "text",
     
+    "conf.__widget__.z_min", "text",
+    "conf.__widget__.z_prepare_offset", "text",
+    "conf.__widget__.y_prepare_offset", "text",
+    "conf.__widget__.x_prepare_offset", "text",
+    
     "conf.__widget__.gripper_close_ratio", "slider.0.1",
+    "conf.__widget__.camera_position", "radio",
+    
     // Constraints
     "conf.__constraints__.gripper_close_ratio", "0.0<=x<=1.0",
+    "conf.__constraints__.camera_position", "(middle, high)",
+
     ""
   };
 // </rtc-template>
@@ -133,6 +144,8 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("x_prepare_offset", m_x_prepare_offset, "0.00");
   bindParameter("y_prepare_offset", m_y_prepare_offset, "0.00");
   bindParameter("z_prepare_offset", m_z_prepare_offset, "0.030");
+    
+  bindParameter("camera_position", m_camera_position, "middle");
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -378,14 +391,27 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
    coil::sleep(m_sleepTime);
 
    std::cout << "[ArmImageGenerator] Escape" << std::endl;
-   //  m_jointPos->length(6);
-   m_jointPos[0] = 0;
-   m_jointPos[1] = M_PI/4;
-   m_jointPos[2] = M_PI/4;
-   m_jointPos[3] = 0;
-   m_jointPos[4] = M_PI/2;
-   m_jointPos[5] = 0;
-   ret = m_manipMiddle->movePTPJointAbs(m_jointPos);  
+   if(m_camera_position == "middle") {
+      //  m_jointPos->length(6);
+      m_jointPos[0] = 0;
+      m_jointPos[1] = M_PI/4;
+      m_jointPos[2] = M_PI/4;
+      m_jointPos[3] = 0;
+      m_jointPos[4] = M_PI/2;
+      m_jointPos[5] = 0;
+   }
+    
+   else if(m_camera_position == "high") {
+      //  m_jointPos->length(6);
+      m_jointPos[0] = 0;
+      m_jointPos[1] = 0;
+      m_jointPos[2] = M_PI/2;
+      m_jointPos[3] = 0;
+      m_jointPos[4] = M_PI/2;
+      m_jointPos[5] = 0;
+   }
+
+   ret = m_manipMiddle->movePTPJointAbs(m_jointPos);
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
      std::cout << " ERRORCODE    :" << ret->id << std::endl;
