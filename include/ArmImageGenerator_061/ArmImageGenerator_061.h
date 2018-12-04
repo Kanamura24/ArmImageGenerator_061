@@ -308,7 +308,13 @@ class ArmImageGenerator_061
   float m_camera_jointPos4;
   float m_camera_jointPos5;
 
-
+  float m_initial_jointPos0;
+  float m_initial_jointPos1;
+  float m_initial_jointPos2;
+  float m_initial_jointPos3;
+  float m_initial_jointPos4;
+  float m_initial_jointPos5;
+  
   // </rtc-template>
 
   // DataInPort declaration

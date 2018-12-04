@@ -60,6 +60,13 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.camera_jointPos3", "0",
     "conf.default.camera_jointPos4", "M_PI/2",
     "conf.default.camera_jointPos5", "0",
+    "conf.default.initial_jointPos0", "0",
+    "conf.default.initial_jointPos1", "M_PI/4",
+    "conf.default.initial_jointPos2", "M_PI/4",
+    "conf.default.initial_jointPos3", "0",
+    "conf.default.initial_jointPos4", "M_PI/2",
+    "conf.default.initial_jointPos5", "0",  
+    
     
     
     // Widget
@@ -82,6 +89,13 @@ static const char* armimagegenerator_061_spec[] =
     "conf.__widget__.camera_jointPos3", "text",
     "conf.__widget__.camera_jointPos4", "text",
     "conf.__widget__.camera_jointPos5", "text",
+    "conf.__widget__.initial_jointPos0", "text",
+    "conf.__widget__.initial_jointPos1", "text",
+    "conf.__widget__.initial_jointPos2", "text",
+    "conf.__widget__.initial_jointPos3", "text",
+    "conf.__widget__.initial_jointPos4", "text",
+    "conf.__widget__.initial_jointPos5", "text",
+    
     
     "conf.__widget__.gripper_close_ratio", "slider.0.1",
     
@@ -162,7 +176,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("camera_jointPos3", m_camera_jointPos3, "0");
   bindParameter("camera_jointPos4", m_camera_jointPos4, "M_PI/2");
   bindParameter("camera_jointPos5", m_camera_jointPos5, "0");
-
+  
+  bindParameter("initial_jointPos0", m_initial_jointPos0, "0");
+  bindParameter("initial_jointPos1", m_initial_jointPos1, "M_PI/4");
+  bindParameter("initial_jointPos2", m_initial_jointPos2, "M_PI/4");
+  bindParameter("initial_jointPos3", m_initial_jointPos3, "0");
+  bindParameter("initial_jointPos4", m_initial_jointPos4, "M_PI/2");
+  bindParameter("initial_jointPos5", m_initial_jointPos5, "0");
   
   // </rtc-template>
   
@@ -237,12 +257,12 @@ RTC::ReturnCode_t ArmImageGenerator_061::onActivated(RTC::UniqueId ec_id)
 	}
 
  	m_jointPos->length(6);
- 	m_jointPos[0] = 0;
- 	m_jointPos[1] = M_PI/4;
- 	m_jointPos[2] = M_PI/4;
- 	m_jointPos[3] = 0;
- 	m_jointPos[4] = M_PI/2;
- 	m_jointPos[5] = 0;
+ 	m_jointPos[0] = m_initial_jointPos0;
+ 	m_jointPos[1] = m_initial_jointPos1;
+ 	m_jointPos[2] = m_initial_jointPos2;
+ 	m_jointPos[3] = m_initial_jointPos3;
+ 	m_jointPos[4] = m_initial_jointPos4;
+ 	m_jointPos[5] = m_initial_jointPos5;
 
  	//m_manipMiddle->movePTPJointAbs(m_jointPos);
 
@@ -525,12 +545,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
   
   
   std::cout << "[ArmImageGenerator] Ready" << std::endl;
-  m_jointPos[0] = 0;
-  m_jointPos[1] = M_PI/4;
-  m_jointPos[2] = M_PI/4;
-  m_jointPos[3] = 0;
-  m_jointPos[4] = M_PI/2;
-  m_jointPos[5] = 0;
+  m_jointPos[0] = m_initial_jointPos0;
+  m_jointPos[1] = m_initial_jointPos1;
+  m_jointPos[2] = m_initial_jointPos2;
+  m_jointPos[3] = m_initial_jointPos3;
+  m_jointPos[4] = m_initial_jointPos4;
+  m_jointPos[5] = m_initial_jointPos5;
+  
   m_manipMiddle->movePTPJointAbs(m_jointPos);  
   coil::sleep(m_sleepTime);
 
@@ -581,12 +602,13 @@ RTC::ReturnCode_t ArmImageGenerator_061::onExecute(RTC::UniqueId ec_id)
   coil::sleep(m_sleepTime);
 
   std::cout << "[ArmImageGenerator] Ready" << std::endl;
-  m_jointPos[0] = 0;
-  m_jointPos[1] = M_PI/4;
-  m_jointPos[2] = M_PI/4;
-  m_jointPos[3] = 0;
-  m_jointPos[4] = M_PI/2;
-  m_jointPos[5] = 0;
+  m_jointPos[0] = m_initial_jointPos0;
+  m_jointPos[1] = m_initial_jointPos1;
+  m_jointPos[2] = m_initial_jointPos2;
+  m_jointPos[3] = m_initial_jointPos3;
+  m_jointPos[4] = m_initial_jointPos4;
+  m_jointPos[5] = m_initial_jointPos5;
+  
   ret = m_manipMiddle->movePTPJointAbs(m_jointPos);  
    if (ret->id != JARA_ARM::OK) {
      std::cout << "ERROR in ServoON" << std::endl;
