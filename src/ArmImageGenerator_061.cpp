@@ -58,13 +58,13 @@ static const char* armimagegenerator_061_spec[] =
     "conf.default.camera_jointPos1", "M_PI/4",
     "conf.default.camera_jointPos2", "M_PI/4",
     "conf.default.camera_jointPos3", "0",
-    "conf.default.camera_jointPos4", "M_PI/2",
+    "conf.default.camera_jointPos4", "1.57076",
     "conf.default.camera_jointPos5", "0",
     "conf.default.initial_jointPos0", "0",
-    "conf.default.initial_jointPos1", "M_PI/4",
-    "conf.default.initial_jointPos2", "M_PI/4",
+    "conf.default.initial_jointPos1", "0.78538",
+    "conf.default.initial_jointPos2", "0.78538",
     "conf.default.initial_jointPos3", "0",
-    "conf.default.initial_jointPos4", "M_PI/2",
+    "conf.default.initial_jointPos4", "1.57076",
     "conf.default.initial_jointPos5", "0",  
     
     
@@ -171,17 +171,17 @@ RTC::ReturnCode_t ArmImageGenerator_061::onInitialize()
   bindParameter("z_prepare_offset", m_z_prepare_offset, "0.030");
     
   bindParameter("camera_jointPos0", m_camera_jointPos0, "0");
-  bindParameter("camera_jointPos1", m_camera_jointPos1, "M_PI/4");
-  bindParameter("camera_jointPos2", m_camera_jointPos2, "M_PI/4");
+  bindParameter("camera_jointPos1", m_camera_jointPos1, "0.78538");
+  bindParameter("camera_jointPos2", m_camera_jointPos2, "0.78538");
   bindParameter("camera_jointPos3", m_camera_jointPos3, "0");
-  bindParameter("camera_jointPos4", m_camera_jointPos4, "M_PI/2");
+  bindParameter("camera_jointPos4", m_camera_jointPos4, "1.57076");
   bindParameter("camera_jointPos5", m_camera_jointPos5, "0");
   
   bindParameter("initial_jointPos0", m_initial_jointPos0, "0");
-  bindParameter("initial_jointPos1", m_initial_jointPos1, "M_PI/4");
-  bindParameter("initial_jointPos2", m_initial_jointPos2, "M_PI/4");
+  bindParameter("initial_jointPos1", m_initial_jointPos1, "0.78538");
+  bindParameter("initial_jointPos2", m_initial_jointPos2, "0.78538");
   bindParameter("initial_jointPos3", m_initial_jointPos3, "0");
-  bindParameter("initial_jointPos4", m_initial_jointPos4, "M_PI/2");
+  bindParameter("initial_jointPos4", m_initial_jointPos4, "1.57076");
   bindParameter("initial_jointPos5", m_initial_jointPos5, "0");
   
   // </rtc-template>
